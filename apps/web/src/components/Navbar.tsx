@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ShoppingBag, Search, PackageCheck, ShieldCheck, X, Zap, ChevronRight, Sparkles } from "lucide-react";
+import { ShoppingBag, Search, PackageCheck, X, Sparkles, Heart } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import type { Category } from "../types";
 
@@ -10,7 +10,6 @@ interface NavbarProps {
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onOpenTracker: () => void;
-  onOpenAdmin: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -20,7 +19,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   searchQuery,
   onSearchChange,
   onOpenTracker,
-  onOpenAdmin,
 }) => {
   const { itemCount, setIsCartOpen } = useCart();
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -52,45 +50,39 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-200">
-      {/* 1. Top Enterprise Notification Bar */}
-      <div className="bg-slate-950 text-slate-300 text-[11px] font-medium tracking-wide border-b border-slate-800/80 px-4 py-1.5 flex items-center justify-between">
+      {/* 1. Customer Incentive Announcement Bar */}
+      <div className="bg-slate-950 text-slate-300 text-[11px] font-medium tracking-wide border-b border-slate-800/80 px-4 py-2">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
-            <span className="text-slate-400 font-mono text-[10px] uppercase tracking-wider hidden sm:inline">
-              Edge Network: Global Active
-            </span>
-            <span className="text-slate-600 hidden sm:inline">•</span>
             <span className="text-slate-200 font-medium truncate">
-              ⚡ Free Express Delivery on orders over $100 &amp; Instant Cash on Delivery
+              Complimentary Express Delivery on orders over $100 • Cash on Delivery Available
             </span>
           </div>
 
-          <div className="hidden lg:flex items-center gap-4 text-[11px] text-slate-400">
-            <span className="flex items-center gap-1 hover:text-white transition-colors cursor-default">
-              <Zap className="w-3 h-3 text-amber-400" />
-              Sub-50ms D1 Database
-            </span>
-            <span>•</span>
+          <div className="hidden md:flex items-center gap-4 text-[11px] text-slate-400">
             <button
               onClick={onOpenTracker}
-              className="text-slate-300 hover:text-indigo-400 font-medium transition-colors"
+              className="text-slate-300 hover:text-white font-medium transition-colors flex items-center gap-1.5"
             >
-              Order Status Lookup
+              <PackageCheck className="w-3.5 h-3.5 text-indigo-400" />
+              <span>Track Your Order</span>
             </button>
+            <span>•</span>
+            <span className="text-slate-400">7-Day Easy Returns</span>
           </div>
         </div>
       </div>
 
-      {/* 2. Main High-Fidelity Navigation Bar */}
+      {/* 2. Main Navigation Bar */}
       <div className={`glass-header transition-shadow duration-300 ${isScrolled ? "shadow-card" : ""}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-3 sm:gap-6">
             
-            {/* Brand Logo & Tag */}
+            {/* Clean Brand Lockup */}
             <button
               onClick={() => {
                 onSelectCategory(null);
@@ -98,21 +90,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               className="flex items-center gap-2.5 group text-left focus:outline-none"
             >
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-950 text-white shadow-sm shadow-indigo-500/20 group-hover:scale-[1.03] transition-all duration-200 ring-1 ring-white/20">
-                <ShoppingBag className="w-5 h-5 text-white stroke-[2.2]" />
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ring-white"></span>
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-slate-950 text-white shadow-sm group-hover:scale-[1.03] transition-all duration-200 ring-1 ring-slate-800">
+                <ShoppingBag className="w-5 h-5 text-indigo-400 stroke-[2.2]" />
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xl font-black tracking-tight text-slate-950">
-                    AURA<span className="text-indigo-600">.</span>
-                  </span>
-                  <span className="px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200/60 rounded-md">
-                    Cloudflare
-                  </span>
-                </div>
-                <span className="text-[10px] text-slate-500 font-medium tracking-tight -mt-0.5 hidden sm:block">
-                  Enterprise Commerce
+                <span className="text-xl font-black tracking-tight text-slate-950 leading-none">
+                  AURA<span className="text-indigo-600">.</span>
+                </span>
+                <span className="text-[10px] text-slate-500 font-semibold tracking-wide uppercase mt-0.5">
+                  Curated Essentials
                 </span>
               </div>
             </button>
@@ -123,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Search products, specifications, apparel..."
+                placeholder="Search products, apparel, gear..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 className="w-full pl-10 pr-20 py-2 text-sm bg-slate-100/80 hover:bg-slate-100 focus:bg-white border border-slate-200/80 focus:border-indigo-600 rounded-xl transition-all outline-none shadow-xs focus:shadow-glow text-slate-900 placeholder:text-slate-400 font-medium"
@@ -149,7 +135,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Right Action Icons & Badges */}
-            <div className="flex items-center gap-1.5 sm:gap-2.5">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Mobile Search Toggle */}
               <button
                 onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
@@ -162,28 +148,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Track Order CTA */}
               <button
                 onClick={onOpenTracker}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-indigo-700 hover:bg-indigo-50/80 rounded-xl border border-transparent hover:border-indigo-100 transition-all duration-150"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-indigo-700 hover:bg-indigo-50/80 rounded-xl border border-slate-200/70 hover:border-indigo-100 transition-all duration-150"
               >
                 <PackageCheck className="w-4 h-4 text-slate-500" />
                 <span>Track Order</span>
               </button>
 
-              {/* Admin Portal Gateway */}
-              <button
-                onClick={onOpenAdmin}
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-slate-950 hover:bg-slate-100 rounded-xl border border-slate-200/70 transition-all duration-150"
-                title="Management Console"
-              >
-                <ShieldCheck className="w-4 h-4 text-indigo-600" />
-                <span className="hidden sm:inline">Admin</span>
-              </button>
-
-              <div className="h-6 w-px bg-slate-200 mx-1 hidden sm:block"></div>
-
-              {/* High-Impact Cart Button */}
+              {/* Shopping Bag CTA */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative flex items-center gap-2 pl-3 pr-4 py-2 bg-slate-950 text-white rounded-xl hover:bg-indigo-600 transition-all duration-200 shadow-sm hover:shadow-glow group focus:outline-none"
+                className="relative flex items-center gap-2 pl-3.5 pr-4 py-2 bg-slate-950 text-white rounded-xl hover:bg-indigo-600 transition-all duration-200 shadow-sm hover:shadow-glow group focus:outline-none"
                 aria-label="Open Cart"
               >
                 <ShoppingBag className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
@@ -224,7 +198,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           )}
 
-          {/* 3. Sleek Enterprise Category Ribbon */}
+          {/* 3. Category Ribbon */}
           <div className="flex items-center gap-1.5 overflow-x-auto py-2.5 border-t border-slate-100 scrollbar-none">
             <button
               onClick={() => onSelectCategory(null)}
@@ -234,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : "bg-transparent text-slate-600 hover:text-slate-950 hover:bg-slate-100"
               }`}
             >
-              All Categories
+              All Products
             </button>
             {categories.map((cat) => (
               <button

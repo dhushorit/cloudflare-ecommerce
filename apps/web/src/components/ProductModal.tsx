@@ -222,7 +222,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, on
                 }`}></span>
                 <span className="text-slate-700">
                   {product.stock > 0
-                    ? `Atomic Stock: ${product.stock} units ready for immediate dispatch`
+                    ? `In Stock: ${product.stock} units available for fast shipping`
                     : "Currently Out of Stock"}
                 </span>
               </div>

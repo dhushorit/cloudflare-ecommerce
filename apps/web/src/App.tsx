@@ -9,7 +9,7 @@ import { OrderTrackerModal } from "./components/OrderTrackerModal";
 import { AdminPortal } from "./components/AdminPortal";
 import { api } from "./lib/api";
 import type { Product, Category } from "./types";
-import { Sparkles, PackageOpen, ShoppingBag, ArrowRight, ShieldCheck, Zap, Globe, Heart } from "lucide-react";
+import { Sparkles, PackageOpen, ShoppingBag, ShieldCheck, Truck, RefreshCw, Lock } from "lucide-react";
 
 export const App: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -22,6 +22,15 @@ export const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<"storefront" | "admin">(() => {
     return window.location.hash === "#admin" ? "admin" : "storefront";
   });
+
+  // Listen for hash changes (e.g. #admin)
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentView(window.location.hash === "#admin" ? "admin" : "storefront");
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   // Modals & Drawers
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -82,7 +91,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] text-slate-900 selection:bg-indigo-600 selection:text-white">
-      {/* 1. Global Navigation */}
+      {/* 1. Customer Navigation Bar */}
       <Navbar
         categories={categories}
         selectedCategory={selectedCategory}
@@ -90,13 +99,9 @@ export const App: React.FC = () => {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenTracker={() => setIsTrackerOpen(true)}
-        onOpenAdmin={() => {
-          window.location.hash = "admin";
-          setCurrentView("admin");
-        }}
       />
 
-      {/* 2. Hero Section (shown on main catalog view) */}
+      {/* 2. Hero Section (shown on default collection view) */}
       {!selectedCategory && !searchQuery && <Hero />}
 
       {/* 3. Main Catalog Section */}
@@ -108,7 +113,7 @@ export const App: React.FC = () => {
               <Sparkles className="w-4 h-4 text-indigo-600" />
               <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
                 {searchQuery
-                  ? `Search: "${searchQuery}"`
+                  ? `Search Results for "${searchQuery}"`
                   : currentCategoryName
                   ? currentCategoryName
                   : "Curated Catalog"}
@@ -116,10 +121,10 @@ export const App: React.FC = () => {
             </div>
             <p className="text-xs text-slate-500 mt-1 font-medium">
               {searchQuery
-                ? `Displaying matching items for "${searchQuery}"`
+                ? `Showing matching products for "${searchQuery}"`
                 : currentCategoryName
-                ? `Showing verified hardware & essentials in ${currentCategoryName}`
-                : "Handpicked premium essentials deployed for instant delivery."}
+                ? `Discover premium handpicked items in ${currentCategoryName}`
+                : "Handpicked premium essentials crafted for longevity and modern lifestyle."}
             </p>
           </div>
 
@@ -161,11 +166,11 @@ export const App: React.FC = () => {
             <h3 className="text-base font-extrabold text-slate-900">No products found</h3>
             <p className="text-xs text-slate-500 mt-1 max-w-sm leading-relaxed">
               {searchQuery
-                ? `We couldn't locate any products matching "${searchQuery}". Try searching for another keyword.`
-                : "No active products are cataloged in this collection at the moment."}
+                ? `We couldn't find any products matching "${searchQuery}". Try a different keyword.`
+                : "No items are currently listed in this category."}
             </p>
 
-            {/* Quick Keyword Suggestions */}
+            {/* Keyword Suggestions */}
             {searchQuery && (
               <div className="mt-4 flex flex-wrap gap-2 justify-center">
                 {["Headphones", "Keyboard", "Tee"].map((term) => (
@@ -206,32 +211,32 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* 4. Enterprise Global Footer */}
+      {/* 4. Professional Storefront Footer */}
       <footer className="mt-auto border-t border-slate-200/80 bg-white">
-        {/* Main Footer Links & Info */}
+        {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             
-            {/* Column 1: Brand & Architecture */}
-            <div className="md:col-span-1 space-y-3">
+            {/* Column 1: Brand Essence */}
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-black text-sm">
+                <div className="w-8 h-8 rounded-lg bg-slate-950 flex items-center justify-center text-white font-black text-sm">
                   A
                 </div>
                 <span className="font-black text-lg text-slate-950">AURA<span className="text-indigo-600">.</span></span>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Edge-native e-commerce infrastructure built with Cloudflare Pages, Workers, D1 database, and R2 asset storage.
+                Dedicated to minimalist design, precision-engineered audio gear, and sustainable apparel crafted for lasting everyday comfort.
               </p>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200/60 text-[11px] font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>All 300+ Edge Nodes Healthy</span>
+              <div className="flex items-center gap-2 text-emerald-700 text-xs font-semibold pt-1">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Verified Official Retailer</span>
               </div>
             </div>
 
-            {/* Column 2: Quick Links */}
+            {/* Column 2: Collections */}
             <div>
-              <h4 className="text-xs font-extrabold text-slate-950 uppercase tracking-wider mb-3">Storefront</h4>
+              <h4 className="text-xs font-extrabold text-slate-950 uppercase tracking-wider mb-3">Collections</h4>
               <ul className="space-y-2 text-xs text-slate-600 font-medium">
                 <li>
                   <button onClick={() => { setSelectedCategory(null); setSearchQuery(""); }} className="hover:text-indigo-600 transition-colors">
@@ -248,9 +253,9 @@ export const App: React.FC = () => {
               </ul>
             </div>
 
-            {/* Column 3: Customer Care & Order Tracking */}
+            {/* Column 3: Customer Care */}
             <div>
-              <h4 className="text-xs font-extrabold text-slate-950 uppercase tracking-wider mb-3">Customer Support</h4>
+              <h4 className="text-xs font-extrabold text-slate-950 uppercase tracking-wider mb-3">Customer Care</h4>
               <ul className="space-y-2 text-xs text-slate-600 font-medium">
                 <li>
                   <button onClick={() => setIsTrackerOpen(true)} className="hover:text-indigo-600 transition-colors">
@@ -258,22 +263,22 @@ export const App: React.FC = () => {
                   </button>
                 </li>
                 <li>
-                  <span className="text-slate-500">Express Cash on Delivery</span>
+                  <span className="text-slate-500 hover:text-slate-700 cursor-pointer">Shipping &amp; Delivery Terms</span>
                 </li>
                 <li>
-                  <span className="text-slate-500">7-Day Replacement Policy</span>
+                  <span className="text-slate-500 hover:text-slate-700 cursor-pointer">7-Day Replacement Policy</span>
                 </li>
                 <li>
-                  <span className="text-slate-500">Instant Telegram Dispatch</span>
+                  <span className="text-slate-500 hover:text-slate-700 cursor-pointer">Warranty &amp; Support</span>
                 </li>
               </ul>
             </div>
 
-            {/* Column 4: Payment Acceptance & Security */}
+            {/* Column 4: Payment Acceptance */}
             <div>
               <h4 className="text-xs font-extrabold text-slate-950 uppercase tracking-wider mb-3">Payment &amp; Security</h4>
               <p className="text-xs text-slate-500 leading-relaxed mb-3">
-                Zero-risk doorstep payment alongside verified mobile banking gateways.
+                Shop with confidence. We support physical doorstep inspection alongside secure mobile banking.
               </p>
               <div className="flex flex-wrap gap-1.5">
                 <span className="px-2.5 py-1 bg-slate-100 text-slate-700 text-[11px] font-bold rounded-md border border-slate-200">
@@ -294,16 +299,26 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-slate-100 py-6 text-center text-xs text-slate-400">
+        {/* Bottom Legal & Discrete Staff Portal */}
+        <div className="border-t border-slate-100 py-6 text-xs text-slate-400">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>© {new Date().getFullYear()} AuraStore Edge Inc. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} AURA Lifestyle Inc. All rights reserved.</p>
             <div className="flex items-center gap-4 text-[11px]">
-              <span className="font-mono text-slate-500">D1 SQLite v3</span>
+              <span className="hover:text-slate-600 cursor-pointer">Privacy Policy</span>
               <span>•</span>
-              <span className="font-mono text-slate-500">Cloudflare Workers</span>
+              <span className="hover:text-slate-600 cursor-pointer">Terms of Service</span>
               <span>•</span>
-              <span className="font-mono text-slate-500">R2 Storage</span>
+              {/* Discrete Staff Portal link for store management */}
+              <button
+                onClick={() => {
+                  window.location.hash = "admin";
+                  setCurrentView("admin");
+                }}
+                className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                title="Staff Management Portal"
+              >
+                Staff Portal
+              </button>
             </div>
           </div>
         </div>

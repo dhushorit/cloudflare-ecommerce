@@ -113,8 +113,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
               {completedOrder
-                ? "Your order has been recorded in Cloudflare D1."
-                : "Safe & atomic order placement with instant edge dispatch"}
+                ? "We're preparing your order for prompt delivery."
+                : "Safe & encrypted checkout with doorstep delivery"}
             </p>
           </div>
           <button
@@ -135,8 +135,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <h4 className="text-2xl font-black text-slate-900">
               Thank You, {name}!
             </h4>
-            <p className="text-sm text-slate-600 mt-1 max-w-md">
-              We received your order. A confirmation alert has been broadcast to our Telegram dispatch bot and inventory was reserved atomically.
+            <p className="text-sm text-slate-600 mt-1 max-w-md leading-relaxed">
+              Your order has been successfully placed. Our fulfillment team is preparing your package for dispatch. You can track your delivery anytime using your Order Reference below.
             </p>
 
             {/* Order Reference Box */}

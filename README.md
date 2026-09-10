@@ -151,7 +151,7 @@ npm run dev
 ## 🔐 Credentials (Default Local Seed)
 - **Admin Email**: `admin@example.com`
 - **Admin Password**: `Admin123!`
-- **Admin Access Button**: Top-right corner in the Storefront navbar (`Admin`).
+- **Admin Access**: Navigate to `http://localhost:5173/#admin` or click the subtle **Staff Portal** link in the storefront footer.
 
 ---
 
