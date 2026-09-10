@@ -1,0 +1,45 @@
+name = "ecommerce-api"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+# -----------------------------------------------------------------------------
+# Cloudflare D1 Database Binding (Serverless SQLite)
+# -----------------------------------------------------------------------------
+[[d1_databases]]
+binding = "DB"
+database_name = "ecommerce-d1"
+database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" # Replaced by: npx wrangler d1 create ecommerce-d1
+migrations_dir = "./drizzle"
+
+# -----------------------------------------------------------------------------
+# Cloudflare R2 Storage Binding (Product Media & Assets)
+# -----------------------------------------------------------------------------
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "ecommerce-assets"
+preview_bucket_name = "ecommerce-assets-preview"
+
+# -----------------------------------------------------------------------------
+# Cloudflare KV Binding (Sessions, Caching, Rate Limiting)
+# -----------------------------------------------------------------------------
+[[kv_namespaces]]
+binding = "KV"
+id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # Replaced by: npx wrangler kv:namespace create KV
+preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# -----------------------------------------------------------------------------
+# Public Environment Variables (Non-sensitive)
+# -----------------------------------------------------------------------------
+[vars]
+ENVIRONMENT = "production"
+ALLOWED_ORIGIN = "http://localhost:5173"
+R2_PUBLIC_DOMAIN = "https://assets.yourstore.com" # Or Cloudflare R2 pubsub/worker proxy endpoint
+
+# -----------------------------------------------------------------------------
+# Secrets to set via Wrangler CLI:
+# npx wrangler secret put JWT_SECRET
+# npx wrangler secret put TELEGRAM_BOT_TOKEN
+# npx wrangler secret put TELEGRAM_CHAT_ID
+# npx wrangler secret put RESEND_API_KEY
+# -----------------------------------------------------------------------------
